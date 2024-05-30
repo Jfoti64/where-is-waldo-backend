@@ -9,3 +9,12 @@ exports.getCharacters = asyncHandler(async (req, res, next) => {
   }
   res.json(characterList);
 });
+
+// Get a characters by their name
+exports.getCharacter = asyncHandler(async (req, res, next) => {
+  const character = await Character.findOne({ name: req.params.name} );
+  if (!character) {
+    return res.status(500).json({ message: 'No character found' });
+  }
+  res.json(character);
+});
