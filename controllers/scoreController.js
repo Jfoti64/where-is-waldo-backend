@@ -1,3 +1,4 @@
+const { body, validationResult } = require('express-validator');
 const Score = require('../models/score');
 const asyncHandler = require('express-async-handler');
 
@@ -11,7 +12,7 @@ exports.getScores = asyncHandler(async (req, res, next) => {
 });
 
 // Add score
-exports.create = [
+exports.addScore = [
   body('user_name').trim().isLength({ min: 1 }).escape(),
   body('time').trim().escape(),
 
