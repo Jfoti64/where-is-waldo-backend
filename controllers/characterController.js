@@ -10,9 +10,15 @@ exports.getCharacters = asyncHandler(async (req, res, next) => {
   res.json(characterList);
 });
 
-// Get a characters by their name
+// Count the number of characters
+exports.countCharacters = asyncHandler(async (req, res, next) => {
+  const count = await Character.countDocuments();
+  res.json({ count });
+});
+
+// Get a character by their name
 exports.getCharacter = asyncHandler(async (req, res, next) => {
-  const character = await Character.findOne({ name: req.params.name} );
+  const character = await Character.findOne({ name: req.params.name });
   if (!character) {
     return res.status(500).json({ message: 'No character found' });
   }
