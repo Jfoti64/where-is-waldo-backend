@@ -2,9 +2,9 @@ const { body, validationResult } = require('express-validator');
 const Score = require('../models/score');
 const asyncHandler = require('express-async-handler');
 
-// Get a list of all scores
+// Get a list of top 10 scores sorted by time
 exports.getScores = asyncHandler(async (req, res, next) => {
-  const scoresList = await Score.find().sort({ score: -1 }).limit(10);
+  const scoresList = await Score.find().sort({ time: 1 }).limit(10); // Sort by time in ascending order
   if (!scoresList) {
     return res.status(500).json({ message: 'No scores found' });
   }
