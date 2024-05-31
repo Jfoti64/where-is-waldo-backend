@@ -19,21 +19,22 @@ exports.addScore = [
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      console.error('Validation errors:', errors.array());
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const existingUser = await Score.findOne({ user_name: req.body.user_name });
-    if (existingUser) {
-      return res.status(400).json({ message: 'Username already exists' });
+    try {
+      const score = new Score({
+        user_name: req.body.user_name || 'Anonymous',
+        time: req.body.time,
+      });
+
+      await score.save();
+
+      res.status(201).json({ score });
+    } catch (error) {
+      console.error('Error saving score:', error.message, error.stack);
+      res.status(500).json({ message: 'Internal Server Error', error: error.message });
     }
-
-    const score = new Score({
-      user_name: req.body.user_name,
-      time: req.body.time,
-    });
-
-    await score.save();
-
-    res.status(201).json({ score });
   })
 ];
