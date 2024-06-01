@@ -21,7 +21,14 @@ app.use(limiter);
 
 // Middleware
 app.use(compression()); // Compress all routes
-app.use(cors());
+
+// Update CORS options to allow Netlify domain
+const corsOptions = {
+  origin: 'https://jfoti64-where-is-waldo.netlify.app',
+  optionsSuccessStatus: 200
+};
+app.use(cors(corsOptions));
+
 app.use(express.json());
 // Set CSP headers to allow our Bootstrap and Jquery to be served
 app.use(
